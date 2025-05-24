@@ -1,0 +1,83 @@
+---
+title: "Insights from Automated and Untargeted Marine Microbial Metabolomics"
+author: "William Kumler"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include=FALSE, eval=FALSE)
+library(tidyverse)
+```
+
+# Acknowledgements
+
+# Chapter 1: Introduction
+
+## Marine microbes
+
+Marine carbon fixation happens at an incredible rate. In the blink of an eye (~100 milliseconds), the ocean converts a blue whale's mass of atmospheric carbon dioxide into biomass and has performed this continuously for the last two billion years [@ref]. Most of this is performed by single-celled organisms too small to see with the naked eye known as microbes [@ref]. The process by which they transform air into food is the base of the marine food web and regulates Earth's climate, with many fates available to the fixed carbon. A large fraction of this particulate matter will be transformed back into CO~2~ via respiration within the surface ocean, either by the phytoplankton themselves or the rest of the food chain. A smaller fraction makes it out of the euphotic zone via the biological pump and is sequestered for hundreds to thousands of years, while an even smaller fraction survives to the seafloor and can be sequestered for millenia in marine sediments [@ref].
+
+The pathway a particular atom of carbon travels is determined by the structure of the molecule it composes and the environment in which it's found. Highly labile compounds such as sugars and amino acids can be converted almost instantaneously back into CO~2~, while ultra-refractory compounds can persist for thousands of years. Our understanding of the marine environment's biogeochemistry and community composition has vastly expanded in the past few decades thanks to the establishment of long-term ecological time series and advances in genetic tools, while our characterization of organic carbon lags far behind. Determining the molecular composition of marine carbon and its fluxes through the environment is therefore paramount in improving our ability to accurately model the marine ecosystem [@Jones2024].
+
+## Metabolites and metabolomics
+
+Metabolites are defined simply as the products of cellular metabolism, but this uncomplicated definition belies the dizzying complexity of microbial processes. While technically all biologically produced molecules could fall within this category, the conventional usage refers to the small (<600 Dalton) organic molecules that act as currencies within the cell while excludes macromolecules such as proteins and lipids. Metabolites are often the reaction intermediates and building blocks of larger molecules but have several important roles of their own, including nutrient storage, antioxidation, osmotic balance[@Yancey], buoyancy[@Yancey], and cell signaling (both beneficial and antagonistic interactions) [@Thukral2023]. There are likely hundreds of thousands of individual molecules composing the metabolome in the environment, making their comprehensive analysis challenging [@Schrimpe-Rutledge2016].
+
+Nonetheless, metabolomics attempts to do so. The study of "all" small molecules in the cell is a rapidly growing field and recently eclipsed all other "omics" fields of study according to a topic search in Web of Science with over 10,000 publications in 2024 (Figure 1, @Edwards2023). 
+
+```{r figure WOS field query}
+field_names <- c("metabolomics", "genomics", "transcriptomics", "proteomics", "lipidomics")
+lapply(field_names, function(field_i){
+  filename_i <- paste0("data/", field_i, ".txt")
+  read.table(filename_i, sep = "\t", skip = 1) %>%
+    mutate(field=field_i)
+}) %>%
+  bind_rows() %>%
+  set_names(c("year", "records", "fraction", "field")) %>%
+  filter(year<2025) %>%
+  mutate(field=factor(field, levels=field_names, 
+                      labels=gsub("\\b(\\w)", "\\U\\1", field_names, perl = TRUE))) %>%
+  ggplot(aes(x=year, y=records, color=field, fill = field)) +
+  geom_line(lwd=1) +
+  geom_point(size=3, color="black", pch=21) +
+  scale_y_continuous(sec.axis = dup_axis()) +
+  theme_bw() +
+  theme(legend.position="inside", legend.position.inside = c(0, 1),
+        legend.justification = c(0, 1), legend.background = element_rect(color="black")) +
+  labs(x="Publication year", y="Number of records", color=NULL, fill=NULL)
+```
+
+
+Metabolomics is hard because reasons
+  - lots of variability in molecule styles [@Cajka2016]
+  - More challenging to annotate because building blocks are not shared [@Schrimpe-Rutledge2016]
+
+## Automated and untargeted liquid-chromatography mass spectrometry
+
+Mass spectrometry is the dominant analytical platform in metabolomics [@Cajka2016]. 
+
+Targeted vs untargeted mbx
+
+Untargeted is not the same as automated, though they're often used synonomously
+  - What is automation vs manual
+  - Can have automated targeted workflows
+  - Could in theory use Skyline in untargeted with manual chrom extraction
+
+## Overview of projects
+
+# Chapter 2: Tidy Data Neatly Resolves Mass-Spectrometry's Ragged Arrays
+
+# Chapter 3: Databases Are an Effective and Efficient Method for Storage and Access of Mass-Spectrometry Data
+
+# Chapter 4: Picky with Peakpicking: Assessing Chromatographic Peak Quality with Simple Metrics in Metabolomics
+
+# Chapter 4.5: Speedy Quality Assurance via Lasso Labeling for Untargeted Mass-Spectrometry Data
+
+# Chapter 5: Metabolites Reflect Variability Introduced by Mesoscale Eddies in the North Pacific Subtropical Gyre
+
+# Chapter 6: The Form of Nitrogen Determines its Fate in the North Pacific Subtropical Gyre
+
+# Conclusions
+
+# Bibliography
