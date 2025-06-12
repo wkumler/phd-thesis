@@ -273,7 +273,7 @@ Importantly, note that the creation of these plots required no special knowledge
 
 `RaMS` uses `data.table` internally to enhance speed, but this also allows for more intuitive subsetting in mass-spectrometry data. With `data.table`, operations are nearly as easy to write in R as they are to write in natural language, leveraging the user's intuition and decreasing the barrier to entry for non-coder MS experts. For example, a typical request for MS data might be written in natural language as 
 
-> "All MS$^1$ data points with *m/z* values between an upper and lower bound, from start time to end time."
+> "All MS<sup>1</sup> data points with *m/z* values between an upper and lower bound, from start time to end time."
 
 This request can be written in R almost verbatim thanks to `data.table`'s intuitive indexing and `%between%` function:
 
@@ -286,7 +286,7 @@ Most importantly, this syntax doesn't require the mass-spectrometrist to have an
 
 `RaMS` enhances the intuitive nature of `data.table`'s requests slightly by providing the pmppm function, short for "plus or minus parts-per-million (ppm)". Masses measured on a mass-spectrometer have a certain degree of inherent deviation from the true mass of a molecule, and the size of this error is a fundamental property of the instrument used. This means that mass-spectrometrists are often interested in not only the data points at an exact mass, but also those within the ppm error range. MS data exploration often makes requests for data in natural language like:
 
-> "All MS$^1$ data points with *m/z* values within the instrument's ppm error of a certain molecule's mass"
+> "All MS<sup>1</sup> data points with *m/z* values within the instrument's ppm error of a certain molecule's mass"
 
 Which can again be expressed in R quite simply as:
 
@@ -444,11 +444,11 @@ MZTree and mzMD provide a slightly strange interface to MS data, requiring a sep
 
 ### SQL-based parsers were simple to write and use
 
-We then used custom code to convert the mzML files into SQLite and DuckDB databases using a simple schema for full scan (MS<sup>1</sup>) and MS/MS (MS<sup>2</sup>) data. The MS<sup>1</sup> table consisted exclusively of fields for filename, scan index, retention time, *m/z* ratio, and intensity. The MS2 table consisted of the same fields except that the *m/z* column was separated into precursor and fragment *m/z*. Although we did not extend these databases to include the metadata associated with each file and scan, the logical framework could be easily extended in future work and the metadata typically represents a small fraction of the total space within the file, allowing us to make reasonable comparisons about file size between the databases and the metadata-rich other file types. We also converted each file's MS<sup>1</sup> and MS2 table into Parquet representations for comparison using the same field/column schema.
+We then used custom code to convert the mzML files into SQLite and DuckDB databases using a simple schema for full scan (MS<sup>1</sup>) and MS/MS (MS<sup>2</sup>) data. The MS<sup>1</sup> table consisted exclusively of fields for filename, scan index, retention time, *m/z* ratio, and intensity. The MS<sup>2</sup> table consisted of the same fields except that the *m/z* column was separated into precursor and fragment *m/z*. Although we did not extend these databases to include the metadata associated with each file and scan, the logical framework could be easily extended in future work and the metadata typically represents a small fraction of the total space within the file, allowing us to make reasonable comparisons about file size between the databases and the metadata-rich other file types. We also converted each file's MS<sup>1</sup> and MS<sup>2</sup> table into Parquet representations for comparison using the same field/column schema.
 
 We found that the documentation for SQLite, DuckDB, and Parquet file formats in Python far exceeded the documentation available for any mzML parser. This is unsurprising given that these file formats are used widely outside of MS research and are developed and maintained by dedicated teams. Additionally, the use of a consistent SQL syntax for table creation and insertion meant that the same code could be used to write to both SQLite and DuckDB, as well as any other databases supported in Python. The use of packages such as SQLAlchemy could be used to additionally streamline this process to any additional database by simply swapping in a new database engine.
 
-Querying the MS1 and MS2 tables was also very straightforward. After establishing a connection to the database, the six queries could be asked using nearly human-readable SQL syntax. Requesting the thousandth MS<sup>1</sup> scan by number consisted simply of `SELECT * FROM MS1 WHERE id = 1000` passed along to the `pandas.read_sql_query` function. More complicated queries such as retention time range (`SELECT * FROM MS1 WHERE rt BETWEEN 6 AND 8`) and a precursor mass search (`SELECT * FROM MS2 WHERE premz BETWEEN 118.086 AND 118.087`) were similarly intuitive.
+Querying the MS<sup>1</sup> and MS<sup>2</sup> tables was also very straightforward. After establishing a connection to the database, the six queries could be asked using nearly human-readable SQL syntax. Requesting the thousandth MS<sup>1</sup> scan by number consisted simply of `SELECT * FROM MS1 WHERE id = 1000` passed along to the `pandas.read_sql_query` function. More complicated queries such as retention time range (`SELECT * FROM MS1 WHERE rt BETWEEN 6 AND 8`) and a precursor mass search (`SELECT * FROM MS2 WHERE premz BETWEEN 118.086 AND 118.087`) were similarly intuitive.
 
 ### Time and space requirements for a single DDA file across formats
 
