@@ -790,27 +790,27 @@ All analyses were run in R [@R], version 4.3.1, and code is available on GitHub 
 
 ## Abbreviations
 
-DCM: Deep Chlorophyll Maximum
+  - DCM: Deep Chlorophyll Maximum
 
-EIC: Extracted Ion Chromatogram
+  - EIC: Extracted Ion Chromatogram
 
-FDR: False Discovery Rate
+  - FDR: False Discovery Rate
 
-GFF: Good Feature Found
+  - GFF: Good Feature Found
 
-HILIC: Hydrophilic Interaction Liquid Chromatography
+  - HILIC: Hydrophilic Interaction Liquid Chromatography
 
-LC: Liquid Chromatography
+  - LC: Liquid Chromatography
 
-MF: Mass Feature
+  - MF: Mass Feature
 
-MS: Mass Spectrometry
+  - MS: Mass Spectrometry
 
-PPM: parts-per-million
+  - PPM: parts-per-million
 
-RT: Retention time
+  - RT: Retention time
 
-SNR: Signal to Noise Ratio
+  - SNR: Signal to Noise Ratio
 
 ## Declarations
 ### Ethics approval and consent to participate
