@@ -1078,4 +1078,32 @@ Note that I'm unhappy I didn't get to do more MS/MS stuff, partially due to the 
 ::: {#refs}
 :::
 
-# Appendix 1: Speedy Quality Assurance via Lasso Labeling for Untargeted Mass-Spectrometry Data {.unnumbered}
+# Appendix: Speedy Quality Assurance via Lasso Labeling for Untargeted Mass-Spectrometry Data {.unnumbered}
+
+## Summary
+
+Distinguishing between high and low quality mass features remains a major bottleneck in untargeted mass spectrometry. Here, we present the R package `squallms` that streamlines the process of chromatographic feature annotation by extracting useful metrics from the raw data, labeling groups of similar features interactively, and building a logistic classification model. The package is available via Bioconductor (https://bioconductor.org/packages/devel/bioc/html/squallms.html) and interfaces with other mass spectrometry packages there such as XCMS [@Smith2006]. We expect this functionality to significantly reduce the effort required to explore and curate increasingly common large-scale chromatography-based mass spectrometry datasets.
+
+## Statement of need
+
+Chromatographic mass spectrometry is a powerful way to characterize the molecular composition of chemical and biological samples. The development of data-driven algorithms for untargeted mass spectrometry has massively increased the amount of information obtainable from these datasets, but these algorithms are still plagued by false positive (noise) features [@Gika2019; @Pirttila2022; @Gloaguen2022]. Though novel metrics are actively being developed to quantify the quality of features extracted by untargeted software [@Kantz2019; @Kumler2023], they are difficult to translate across datasets due to differences in instrument setup and sensitivity. Additionally, removing features via sequential thresholding fails to make use of the multivariate advantage and requires the use of thresholds set arbitrarily by the user [@Olivieri2008].
+
+A potential alternative is the use of a multivariate logistic model for the annotation of chromatographic feature quality. However, creating labeled datasets for training such models is often dull and time consuming because it requires the manual review of many individual chromatograms by an expert. Instead, we propose that many similar features can be annotated simultaneously if organized in such a way that an expert can denote an entire group of features as good or bad with a single interaction. These annotations can then be used to train a logistic regression model so that an entire dataset can be quality annotated with confidence quickly and easily [@Kantz2019].
+
+One way to organize features in such a way that similar ones are near to each other is by interpolating a multi-file extracted ion chromatogram to a shared set of retention times and treating each combination of file and retention time as a dimension in a principal component analysis (Figure A.1).
+
+![Figure A.1: Coercion of a typical multi-file extracted ion chromatogram (upper plot) to a file-by-time matrix. A single high-quality chromatographic feature is shown in all six samples after normalization both in "side view" with intensity on the y axis (upper plot) and "top down" with intensity corresponding to fill color (lower plot).](figures/appendix/joss_fig1.png)
+
+Features that are visually similar tend to cluster tightly in the first few principal components while noise features scatter randomly near the center of this space (Figure A.2).
+
+![Figure A.2: Subset of chromatographic features shown both individually in top down view and in principal component space. The upper plot shows eighteen chromatographic features and their associated ID beginning with the letters FT. Features 134, 137, 138, 141, and 144 all appear to be high quality and look very similar with a bright green central stripe and dark purple edges. The two final small multiples (PC1 and PC2) show the first and second principal components for comparison. The lower plot shows how the eighteen features fall in principal component space, with the five high-quality features noted above clustering to the left side of the plot, separately from the other features.](figures/appendix/joss_fig2.png)
+
+However, the location of this high-quality cluster in principal component space is not easily predictable because feature quality is not necessarily the largest source of variance. This necessitated the development of an interactive feature selection method that we have implemented in the squallms package using R's `shiny` and `plotly` packages [@Chang2024; @Sievert2020]. The main interface is shown below in Figure A.3 for all features, not just the subset used in the demo above.
+
+![Figure A.3: Interactive group labeling dashboard of squallms. The central plot is an interactive version of the principal component plot shown in \autoref{fig:PCA}. Upon mouse hover, individual features are rendered in the lower left panel for rapid overview and detection of high quality regions. Clicking and dragging on this central plot will begin selecting features that can be labeled as either "Good" or "Bad" using the buttons at the bottom of the settings panel at the far left. Selected features are also shown in aggregate in the lower right panel as the median normalized intensity plus its interquartile range. Colors in this central plot correspond to clusters assigned via k-means algorithm and provide a way to use information from principal components beyond the first two, as clusters can be hidden by double-clicking on the associated legend entry. Multiple selections can be made for both good and bad annotations. Once the user is satisfied with the labeling they've done, they can either close the window or click the "Return to R" button in the settings panel to create an R object in the existing session containing the labels and their associated feature ID.](figures/appendix/joss_fig3.png)
+
+The package also contains a manual training tool for rapid single feature annotation by binding quality assessments to specific keyboard presses for ease of annotation. Finally, the package includes a basic logistic regression model framework designed to accept the feature labels and feature quality metrics which produces a best-fit estimate of each feature's quality as not all features are typically labeled using either the aggregate or the manual methods.
+
+## Acknowledgements
+
+This work was supported by the University of Washington eScience Institute through their Data Science Incubator program. We would like to thank Bryna Hazelton and Valentina Staneva for thoughtful discussion on algorithm design and package development. Funding was provided by the Simons Foundation (SCOPE Award ID 329108 to AEI, SF Award ID 385428 to AEI).
