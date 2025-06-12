@@ -1,14 +1,19 @@
 ---
 title: "Insights from Automated and Untargeted Marine Microbial Metabolomics"
 author: "William Kumler"
-date: "`r Sys.Date()`"
-format: docx
+format: 
+  docx:
+    reference-doc: custom-reference-doc.docx
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    highlight-style: github
 bibliography: Exported Items.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include=FALSE, eval=FALSE)
-library(tidyverse)
+# library(tidyverse)
 wc <- function(comment, highlight = "", author = "Will", time = Sys.time(),id = "0"){
   if (isTRUE(knitr:::pandoc_to() == "docx")) {
     return(
@@ -28,7 +33,9 @@ wc <- function(comment, highlight = "", author = "Will", time = Sys.time(),id = 
 }
 ```
 
-# Acknowledgements
+
+
+# Acknowledgements {.unnumbered}
 
   - Lab
     - Anitra
@@ -941,11 +948,11 @@ Compounds for which we had an authentic standard (Supplemental Table 5) were man
 
 #### Automated processing for detection of unknown features
 
-Samples were also processed via the untargeted workflow detailed in @Kumler2023. In short, XCMS (version 3.10.0, @R-xcms) was used for feature detection with CentWave peakpicking, Obiwarp alignment, and peak density correspondence/grouping. This was followed by manual inspection of the extracted ion chromatogram for each mass feature by an expert for quality with only those peaks classified as "Good" used in the analysis here. Features were then matched with and normalized to an internal standard (Supplemental Table 4) as described above. Scripts used for this analysis are available at https://github.com/wkumler/MesoscopeMetabolomicsManuscript/tree/master/untargeted.
+Samples were also processed via the untargeted workflow detailed in @Kumler2023. In short, XCMS (version 3.10.0, @Smith2006, @Tautenhahn2008) was used for feature detection with CentWave peakpicking, Obiwarp alignment, and peak density correspondence/grouping. This was followed by manual inspection of the extracted ion chromatogram for each mass feature by an expert for quality with only those peaks classified as "Good" used in the analysis here. Features were then matched with and normalized to an internal standard (Supplemental Table 4) as described above. Scripts used for this analysis are available at https://github.com/wkumler/MesoscopeMetabolomicsManuscript/tree/master/untargeted.
 
 ### Statistics
 
-All statistics were run in R version 4.4.0. We used multivariate statistics provided by the vegan package (version 2.6-6.1, @R-vegan) to assess the overall impact of various metrics across the metabolome followed by univariate statistics to investigate individually significant responses. Non-parametric tests were used when data were unlikely to obey parametric assumptions and permutational statistics were preferred wherever possible. Multiple comparison problems were controlled where necessary using a false-discovery rate correction [@Benjamini1995]. For the analyses involving the eddy transect samples, sea level anomaly was treated as a continuous variable with the exception of the PERMANOVA, for which SLA was categorized as cyclonic if less than -5 cm and anticyclonic if greater than 5 cm, with a third category for stations in between [@Anderson2001]. Both the MESO-SCOPE eddy center and HEE analyses treated SLA as a categorical variable. Where time of day was included as an explanatory factor in the PERMANOVA, it was binned into 6-hour increments starting from 3AM (e.g. Midday contains casts collected between 9AM and 3PM). Marginal effects are reported for the PERMANOVA analyses to avoid influencing the results with the order of the terms in the model formula. Total sample size (*n*) for the eddy transect was 33 per depth (3 biological triplicates at each of 11 stations), while the eddy centers had an *n* of 15 per eddy (3 biological replicates at 5 depths) and the HEE data had an *n* of 24 (3 biological replicates at 4 stations (2 in the cyclone and 2 in the anticyclone) at 2 depths each).
+All statistics were run in R version 4.4.0. We used multivariate statistics provided by the vegan package (version 2.6-6.1, @veganpkg) to assess the overall impact of various metrics across the metabolome followed by univariate statistics to investigate individually significant responses. Non-parametric tests were used when data were unlikely to obey parametric assumptions and permutational statistics were preferred wherever possible. Multiple comparison problems were controlled where necessary using a false-discovery rate correction [@Benjamini1995]. For the analyses involving the eddy transect samples, sea level anomaly was treated as a continuous variable with the exception of the PERMANOVA, for which SLA was categorized as cyclonic if less than -5 cm and anticyclonic if greater than 5 cm, with a third category for stations in between [@Anderson2001]. Both the MESO-SCOPE eddy center and HEE analyses treated SLA as a categorical variable. Where time of day was included as an explanatory factor in the PERMANOVA, it was binned into 6-hour increments starting from 3AM (e.g. Midday contains casts collected between 9AM and 3PM). Marginal effects are reported for the PERMANOVA analyses to avoid influencing the results with the order of the terms in the model formula. Total sample size (*n*) for the eddy transect was 33 per depth (3 biological triplicates at each of 11 stations), while the eddy centers had an *n* of 15 per eddy (3 biological replicates at 5 depths) and the HEE data had an *n* of 24 (3 biological replicates at 4 stations (2 in the cyclone and 2 in the anticyclone) at 2 depths each).
 
 ## Results
 
