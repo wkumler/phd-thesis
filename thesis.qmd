@@ -9,6 +9,7 @@ format:
     number-sections: true
     highlight-style: github
 bibliography: Exported Items.bib
+csl: chicago-author-date-16th-edition.csl
 ---
 
 ```{r setup, include=FALSE}
@@ -32,8 +33,6 @@ wc <- function(comment, highlight = "", author = "Will", time = Sys.time(),id = 
   }
 }
 ```
-
-
 
 # Acknowledgements {.unnumbered}
 
@@ -1056,6 +1055,10 @@ Data and code used for this manuscript are all available online. Biogeochemical 
 
 
 # Chapter 7: Conclusions
+
+  - Untargeted metabolomics is going to continue to increase in popularity
+    - Main things holding it back are 1) low quality peaks and 2) low quality annotation
+    - 
 
 Note that I'm unhappy I didn't get to do more MS/MS stuff, partially due to the tools not being very good - diagnostic fragments, wildly varying ways/formats to query, Metlin going private, unclear how to create consensus spectra from multiple scans or match these to knowns, limited database availability, lack of MS/MS stuff in my own data - would love to do this next.
 
